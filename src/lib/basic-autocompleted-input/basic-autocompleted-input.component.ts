@@ -27,6 +27,8 @@ import { CommonModule } from '@angular/common';
 import { map, Observable, Subject, of } from 'rxjs';
 import { mergeWith, shareReplay, startWith, switchMap, concatMap, tap } from 'rxjs/operators';
 import { StaticHtmlDirective } from '../static-html.directive';
+import { BASIC_AUTOCOMPLETED_INPUT_TEMPLATE } from './basic-autocompleted-input.template';
+import { BASIC_AUTOCOMPLETED_INPUT_STYLES } from './basic-autocompleted-input.styles';
 import { isInteger, clone } from 'lodash';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -50,8 +52,8 @@ enum ComponentState {
 
 @Component({
   selector: 'app-basic-autocompleted-input',
-  templateUrl: './basic-autocompleted-input.component.html',
-  styleUrls: ['./basic-autocompleted-input.component.scss'],
+  template: BASIC_AUTOCOMPLETED_INPUT_TEMPLATE,
+  styles: [BASIC_AUTOCOMPLETED_INPUT_STYLES],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

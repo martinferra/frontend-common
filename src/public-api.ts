@@ -10,6 +10,8 @@ export * from './lib/static-html.directive';
 
 // UI Components
 export * from './lib/basic-autocompleted-input/basic-autocompleted-input.component';
+export * from './lib/basic-autocompleted-input/basic-autocompleted-input.template';
+export * from './lib/basic-autocompleted-input/basic-autocompleted-input.styles';
 export * from './lib/basic-list-editor/basic-list-editor.component';
 export * from './lib/check-cards-group/check-cards-group.component';
 export * from './lib/downloads-list/downloads-list.component';

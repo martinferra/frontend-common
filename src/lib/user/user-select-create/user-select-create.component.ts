@@ -8,12 +8,14 @@ import { UserService } from '../../models/user/user.service';
 import { UserNewEditDialogWrapperComponent } from '../../users/user-new-edit/user-new-edit.component';
 import { User } from '../../models/user/user.model';
 import { BasicAutocompletedInputComponent } from '../../basic-autocompleted-input/basic-autocompleted-input.component';
+import { BASIC_AUTOCOMPLETED_INPUT_TEMPLATE } from '../../basic-autocompleted-input/basic-autocompleted-input.template';
+import { BASIC_AUTOCOMPLETED_INPUT_STYLES } from '../../basic-autocompleted-input/basic-autocompleted-input.styles';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-user-select-create',
-  templateUrl: '../../basic-autocompleted-input/basic-autocompleted-input.component.html',
-  styleUrls: ['../../basic-autocompleted-input/basic-autocompleted-input.component.scss'],
+  template: BASIC_AUTOCOMPLETED_INPUT_TEMPLATE,
+  styles: [BASIC_AUTOCOMPLETED_INPUT_STYLES],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

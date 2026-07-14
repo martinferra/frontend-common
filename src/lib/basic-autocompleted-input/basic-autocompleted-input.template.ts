@@ -1,4 +1,4 @@
-<mat-form-field [ngClass]="inputCssClass" class="innerClass">
+export const BASIC_AUTOCOMPLETED_INPUT_TEMPLATE = `<mat-form-field [ngClass]="inputCssClass" class="innerClass">
 
     <mat-label *ngIf="label && noElementSelected">{{ label }}</mat-label>
     
@@ -55,7 +55,7 @@
     <mat-error *ngIf="hasErrors()">
         {{ errorMessage }}
     </mat-error>
-</mat-form-field>              
+</mat-form-field>
 <mat-autocomplete
     #auto="matAutocomplete"
     autoActiveFirstOption
@@ -70,4 +70,4 @@
             (mousedown)="$event.preventDefault()">
         </div>
     </mat-option>
-</mat-autocomplete>
+</mat-autocomplete>`;
