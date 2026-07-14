@@ -1,0 +1,93 @@
+<mat-card appearance="outlined" class="example-card">
+  <mat-card-content>
+    <div class="login-label">Registro</div>
+    <div class="form">
+      <form [formGroup]="userForm">
+        <mat-form-field appearance="outline" class="input">
+          <mat-label>Nombre completo</mat-label>
+          <input
+            matInput
+            placeholder="Nombre completo"
+            formControlName="fullname"
+            type="text"
+            name="fullname"
+            required
+          />
+          @if (userFormValidator.get('fullname')?.hasErrors()) {
+            <mat-error>
+              {{ userFormValidator.get('fullname')?.errorMessage }}
+            </mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="input">
+          <mat-label>Correo electr&oacute;nico</mat-label>
+          <input
+            matInput
+            placeholder="Correo electr&oacute;nico"
+            formControlName="email"
+            type="email"
+            name="email"
+            required
+          />
+          @if (userFormValidator.get('email')?.hasErrors()) {
+            <mat-error>
+              {{ userFormValidator.get('email')?.errorMessage }}
+            </mat-error>
+          }
+        </mat-form-field>
+        @if (allowUserRegistration$ | async) {
+          <mat-form-field appearance="outline" class="input">
+            <mat-label>Ingrese una contrase&ntilde;a</mat-label>
+            <input
+              matInput
+              placeholder="Ingrese una contrase&ntilde;a"
+              formControlName="password"
+              type="password"
+              name="password"
+              required
+            />
+            @if (userFormValidator.get('password')?.hasErrors()) {
+              <mat-error>
+                {{ userFormValidator.get('password')?.errorMessage }}
+              </mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="input">
+            <mat-label>Repita la contrase&ntilde;a</mat-label>
+            <input
+              matInput
+              placeholder="Repita la contrase&ntilde;a"
+              formControlName="repeatPassword"
+              type="password"
+              name="repeatPassword"
+              required
+            />
+            @if (userFormValidator.get('repeatPassword')?.hasErrors()) {
+              <mat-error>
+                {{ userFormValidator.get('repeatPassword')?.errorMessage }}
+              </mat-error>
+            }
+          </mat-form-field>
+        }
+      </form>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <div class="button-container">
+      <button mat-button type="button" [routerLink]="['/auth/login']">
+        Iniciar sesi&oacute;n
+      </button>
+      @if (disableRegisterButton$ | async; as disableRegisterButton) {
+        <button
+          mat-raised-button
+          type="button"
+          color="primary"
+          (click)="register()"
+          [disabled]="disableRegisterButton.value"
+        >
+          Registrarme
+        </button>
+      }
+    </div>
+  </mat-card-actions>
+</mat-card>

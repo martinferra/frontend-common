@@ -1,0 +1,30 @@
+<div class="header">
+    <span>Descargas ({{taskList.length}})</span>
+    @if (showClearFinalizedButton) {
+        <mat-icon
+            (click)="clearFinalized()"
+            matTooltip="Limpiar lista"
+        >delete</mat-icon>
+    }
+</div>
+<mat-divider></mat-divider>
+<div class="task-list">
+    @for (taskState of taskList; track $index) {
+        <div class="task-entry">
+            <span class="task-message">{{taskState.message}}</span>
+            @if (showSpinner(taskState)) {
+                <mat-progress-spinner
+                    [mode]="spinnerMode(taskState)"
+                    [value]="spinnerValue(taskState)"
+                    diameter="20">
+                </mat-progress-spinner>
+            }
+            @if (showDoneIcon(taskState)) {
+                <mat-icon class="task-done-icon">done</mat-icon>
+            }
+            @if (taskState.error) {
+                <mat-icon class="task-error-icon">error</mat-icon>
+            }
+        </div>
+    }
+</div>

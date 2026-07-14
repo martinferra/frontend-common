@@ -1,0 +1,27 @@
+<header>
+  <mat-toolbar>
+    @if (showLogo) {
+      <div (click)="clickOnLogo.emit($event)" class="logo"></div>
+    }
+    <span class="example-spacer"></span>
+    <app-tasks-drop-down-viewer></app-tasks-drop-down-viewer>
+    @if (!user) {
+      <a class="links side" routerLink="/auth/login">Iniciar sesi&oacute;n</a>
+    }
+    <div>
+      @if (user) {
+        <a class="links side" [matMenuTriggerFor]="menu">
+          <mat-icon>account_circle</mat-icon>{{ user.fullname }}
+        </a>
+      }
+      <mat-menu #menu="matMenu">
+        @if (user?.isAdmin) {
+          <button mat-menu-item routerLink="/admin">
+            admin
+          </button>
+        }
+        <button mat-menu-item (click)="logout()">Cerrar sesi&oacute;n</button>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+</header>

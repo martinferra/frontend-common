@@ -1,0 +1,73 @@
+<mat-form-field [ngClass]="inputCssClass" class="innerClass">
+
+    <mat-label *ngIf="label && noElementSelected">{{ label }}</mat-label>
+    
+    <div
+        *ngIf="!noElementSelected"
+        class="selected-element-view"
+        matIconPrefix>
+        <div class="pseudo-label" *ngIf="label || placeholder">{{ label || placeholder }}</div>
+        <div
+            class="selectedElementContainer"
+            [ngClass]="{clickable:!disabled,unclickable:disabled}">
+            <div
+                class="selectedElementDesc unselectable"
+                [ngClass]="{selectedElementDescShort:editing}"
+                (click)="editSelectedElement(); $event.preventDefault()"
+                [matTooltip]="selectedElementDescription">
+                {{selectedElementShortenedDescription}}
+            </div>
+            <button
+                type="button"
+                *ngIf="allowClear && !noElementSelected && !disabled"
+                mat-icon-button
+                [disabled]="disabled"
+                tabindex="-1"
+                (mousedown)="$event.preventDefault()"
+                (click)="setNoElementSelected(); $event.preventDefault()">
+                    <mat-icon mat-list-icon>clear</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <input matInput #input
+        [hidden]="elementSelected" 
+        type="text"
+        [formControl]="elementCtrl"
+        [placeholder]="noElementSelected? placeholder : ''"
+        [matAutocomplete]="auto"
+        [tabindex]="_tabIndex"
+        (focus)="onInputFocus()"
+        (focusout)="onInputFocusOut()"
+        (keydown.esc)="onInputFocusOut()">
+
+    <button
+        class="search-button"
+        type="button"
+        *ngIf="elementSelected && !disabled" 
+        matIconSuffix mat-icon-button
+        tabindex="-1"
+        (click)="setEditing(); $event.preventDefault()">
+            <mat-icon mat-list-icon>search</mat-icon>
+    </button>
+
+    <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+    <mat-error *ngIf="hasErrors()">
+        {{ errorMessage }}
+    </mat-error>
+</mat-form-field>              
+<mat-autocomplete
+    #auto="matAutocomplete"
+    autoActiveFirstOption
+    [displayWith]="shortenedDescriptionFn"
+    [panelWidth]="panelWidth">
+    <mat-option 
+        *ngFor="let innerFilteredElement of filteredElements$ | async" 
+        [value]="innerFilteredElement"
+        [matTooltip]="displayElementInTooltip(innerFilteredElement)">
+        <div 
+            *appStaticHtml="displayElementInList(innerFilteredElement)"     
+            (mousedown)="$event.preventDefault()">
+        </div>
+    </mat-option>
+</mat-autocomplete>

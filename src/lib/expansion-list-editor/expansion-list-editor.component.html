@@ -1,0 +1,109 @@
+@if (cardFormat) {
+    <mat-card appearance="outlined">
+        <mat-card-header>
+            <ng-container *ngTemplateOutlet="header"></ng-container>
+        </mat-card-header>
+        <mat-card-content>
+            <ng-container *ngTemplateOutlet="content"></ng-container>
+        </mat-card-content>
+    </mat-card>
+} @else {
+    <ng-container *ngTemplateOutlet="header"></ng-container>
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+}
+
+<ng-template #header>
+    <div class="header">
+
+        @if (componentSpec?.headerSpec?.title) {
+            <h3>{{componentSpec.headerSpec.title}}</h3>
+        }
+
+        @if (showAddButton) {
+            <div class="addCtrGroup">
+                @if (entityHasSubtypes) {
+                    <button mat-icon-button
+                        (click)="showEntitySubtypes = !showEntitySubtypes; $event.preventDefault()">
+                        <mat-icon mat-list-icon>menu</mat-icon>
+                    </button>
+                } @else {
+                    <button mat-icon-button
+                        (click)="newElement(componentSpec.entityClass); $event.preventDefault()">
+                        <mat-icon mat-list-icon>add</mat-icon>
+                    </button>
+                }
+                @if (showEntitySubtypes) {
+                    @for (childClass of componentSpec.entityClass.childClasses; track $index; let idx = $index) {
+                        <div 
+                            class="subtypeRow unselectable"
+                            (click)="newElement(componentSpec.entityClass.childClasses[idx]); showEntitySubtypes = false; $event.preventDefault()">
+                            <span>{{componentSpec.entityClass.childClasses[idx].typeDesc}}</span>
+                            <button mat-icon-button>
+                                <mat-icon mat-list-icon>add</mat-icon>
+                            </button>
+                        </div>
+                    }
+                }
+            </div>
+        }
+
+    </div>
+</ng-template>
+
+<ng-template #content>
+    @if (datasource.length && (showDeleteButtonValues$ | async); as showDeleteButtonValues) {
+        <div class="accordion-container">
+            <mat-accordion>
+                @for (value of auxArray; track $index; let idx = $index) {
+                    <mat-expansion-panel #thisPanel
+                        hideToggle
+                        (opened)="onPanelOpened(idx)"
+                        (closed)="onPanelClosed(idx)">
+            
+                        @if (!singleMode) {
+                            <mat-expansion-panel-header
+
+                                [ngClass]="{ 'editorWithErrors': editorHasErrors(idx) && !thisPanel.expanded }">
+
+                                @if (!thisPanel.expanded) {
+                                    <ng-container mat-panel-title>
+                                        <mat-panel-title [ngClass]="{ 'withIcon': showDeleteButtonValues[idx] }">
+                                            {{ getElementTitle(idx) }}
+                                        </mat-panel-title>
+                                        <mat-panel-description [ngClass]="{ 'withIcon': showDeleteButtonValues[idx] }">
+                                            @if (editorHasErrors(idx)) {
+                                                <span>{{componentSpec.errorMessage}}</span>
+                                            } @else {
+                                                <span>{{ getElementDescription(idx) }}</span>
+                                            }
+                                        </mat-panel-description>
+                                    </ng-container>
+                                } @else {
+                                    <ng-container mat-panel-title>
+                                        <mat-panel-title><mat-icon mat-list-icon>done</mat-icon></mat-panel-title>
+                                        <mat-panel-description>&nbsp;</mat-panel-description>
+                                    </ng-container>
+                                }
+
+                                @if (showDeleteButtonValues[idx]) {
+                                    <button mat-icon-button
+                                        type="button"
+                                        matTooltip="Eliminar"
+                                        (click)="deleteElement(idx); $event.stopPropagation();">
+                                        <mat-icon mat-list-icon>delete</mat-icon>
+                                    </button>
+                                }
+
+                            </mat-expansion-panel-header>
+                        }
+
+                        <div [ngClass]="singleMode? 'singleModeContainer' : ''">
+                            <ng-template editor-container></ng-template>
+                        </div>
+            
+                    </mat-expansion-panel>
+                }
+            </mat-accordion>
+        </div>
+    }
+</ng-template>

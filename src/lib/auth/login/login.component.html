@@ -1,0 +1,107 @@
+<mat-card appearance="outlined" class="example-card">
+  <mat-card-content>
+    <mat-stepper #stepper [linear]="true">
+      <mat-step [stepControl]="emailCtrl">
+        <div class="login-label">Acceder</div>
+        <div class="form">
+          <mat-form-field appearance="outline" class="input">
+            <mat-label>Correo electr&oacute;nico</mat-label>
+            <input
+              matInput
+              placeholder="Correo electr&oacute;nico"
+              [formControl]="emailCtrl"
+              type="email"
+              name="email"
+              required
+            />
+            @if (emailValidator.hasErrors()) {
+              <mat-error>
+                {{ emailValidator.errorMessage }}
+              </mat-error>
+            }
+          </mat-form-field>
+          <div class="button-container">
+            <button mat-button type="button" [routerLink]="['/auth/register']">
+              Crear cuenta
+            </button>
+            <button
+              mat-raised-button
+              type="button"
+              matStepperNext
+              color="primary"
+            >
+              Siguiente
+            </button>
+          </div>
+        </div>
+      </mat-step>
+      <mat-step [stepControl]="passwordForm">
+        <div class="user-info">
+          <div class="user-full-name">{{ userInfo?.fullname }}</div>
+          <div class="user-email" (click)="stepper.previous()">
+            <b>{{ email }}</b>
+          </div>
+        </div>
+        @if (mustRepeatPassword) {
+          <div class="info">
+          Debe ingresar ingresar una nueva contrase&ntilde;a
+          </div>
+        }
+        <div class="form">
+          <form [formGroup]="passwordForm">
+            <mat-form-field appearance="outline" class="input">
+              <mat-label>Ingrese su contrase&ntilde;a</mat-label>
+              <input
+                matInput
+                placeholder="Ingrese su contrase&ntilde;a"
+                formControlName="password"
+                type="password"
+                name="password"
+                required
+              />
+              @if (passwordValidator.get('password')?.hasErrors()) {
+                <mat-error>
+                  {{ passwordValidator.get('password')?.errorMessage }}
+                </mat-error>
+              }
+            </mat-form-field>
+            @if (mustRepeatPassword) {
+              <mat-form-field
+                appearance="outline"
+                class="input"
+              >
+                <mat-label>Repita la contrase&ntilde;a</mat-label>
+                <input
+                  matInput
+                  placeholder="Repita la contrase&ntilde;a"
+                  formControlName="repeatPassword"
+                  type="password"
+                  name="repeatPassword"
+                />
+                @if (passwordValidator.get('repeatPassword')?.hasErrors()) {
+                  <mat-error>
+                    {{ passwordValidator.get('repeatPassword')?.errorMessage }}
+                  </mat-error>
+                }
+              </mat-form-field>
+            }
+            <div class="button-container">
+              <button mat-button type="button" matStepperPrevious>
+                Volver
+              </button>
+              <button
+                mat-raised-button
+                type="button"
+                color="primary"
+                (click)="login()"
+                [disabled]="disableLoginButton"
+              >
+                Ingresar
+              </button>
+            </div>
+          </form>
+        </div>
+      </mat-step>
+    </mat-stepper>
+  </mat-card-content>
+</mat-card>

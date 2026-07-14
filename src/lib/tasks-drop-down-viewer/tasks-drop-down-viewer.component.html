@@ -1,0 +1,31 @@
+@if (taskList.length) {
+    <div class="launcher unselectable" [matMenuTriggerFor]="menu">
+        <span>Tareas en segundo plano ({{taskList.length}})</span>
+    </div>
+    <mat-menu #menu="matMenu" xPosition='before' class="tasksPanel">
+        @if (showClearFinalizedButton) {
+            <button mat-menu-item (click)="clearFinalized()">Limpiar lista</button>
+            <mat-divider></mat-divider>
+        }
+        @for (taskState of taskList; track $index) {
+            <div mat-menu-item>
+                <div class="taskEntry">
+                    <span class="taskMessage">{{taskState.message}}</span>
+                    @if (showSpinner(taskState)) {
+                        <mat-progress-spinner
+                            [mode]="spinnerMode(taskState)"
+                            [value]="spinnerValue(taskState)"
+                            diameter="20">
+                        </mat-progress-spinner>
+                    }
+                    @if (showDoneIcon(taskState)) {
+                        <mat-icon class="done-icon">done</mat-icon>
+                    }
+                    @if (taskState.error) {
+                        <mat-icon class="error-icon">error</mat-icon>
+                    }
+                </div>
+            </div>
+        }
+    </mat-menu>
+}

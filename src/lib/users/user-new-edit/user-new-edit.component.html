@@ -1,0 +1,74 @@
+@if (user) {
+  @if (userIsNew) {
+    <h1 mat-dialog-title>Nuevo</h1>
+  } @else {
+    <div class="user-email">{{ user.email }}</div>
+  }
+
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <div class="parameter-wrapper">
+        <mat-form-field>
+          <mat-label>Nombre completo</mat-label>
+          <input
+            matInput
+            required
+            type="text"
+            formControlName="fullname"
+            placeholder="Nombre completo"
+            autocomplete="off"
+          />
+          <mat-hint>Nombre completo</mat-hint>
+          @if (formValidator.get('fullname')?.hasErrors()) {
+            <mat-error>
+              {{ formValidator.get('fullname')?.errorMessage }}
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      @if (userIsNew) {
+        <div class="parameter-wrapper">
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              required
+              type="email"
+              formControlName="email"
+              placeholder="Email"
+              autocomplete="off"
+            />
+            <mat-hint>Email</mat-hint>
+            @if (formValidator.get('email')?.hasErrors()) {
+              <mat-error>
+                {{ formValidator.get('email')?.errorMessage }}
+              </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      }
+
+      <div formArrayName="roles" class="rolesContainer parameter-wrapper">
+        @for (role of roles.controls; track $index; let i = $index) {
+          <mat-checkbox
+            [formControlName]="i"
+            class="checkbox"
+            >{{ rolesDescriptors[i].desc }}
+          </mat-checkbox>
+        }
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button
+        mat-stroked-button
+        class="action"
+        type="submit"
+        [disabled]="disableSubmitButton"
+      >
+        Aceptar
+      </button>
+    </mat-dialog-actions>
+  </form>
+}
