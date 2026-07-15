@@ -5,10 +5,10 @@ export const appRoutes: Routes = [
   ...customAppRoutes,
   {
     path: 'auth',
-    loadChildren: () => import('@martinferra/frontend-common/auth/auth.routes').then(m => m.authRoutes),
+    loadChildren: () => import('../lib/auth/auth.routes').then(m => m.authRoutes),
   },
   {
     path: 'admin',
-    loadChildren: () => import('@martinferra/frontend-common/admin/admin.routes').then(m => m.adminRoutes),
+    loadChildren: () => import('../lib/admin/admin.routes').then(m => m.adminRoutes),
   },
 ];

@@ -4,10 +4,10 @@ import { appRoutes } from "./app.routes";
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { provideAnimations } from "@angular/platform-browser/animations";
 import { provideMomentDateAdapter } from "@angular/material-moment-adapter";
-import { getAuthHeaderFn } from "@martinferra/frontend-common/interceptors/header.interceptor";
-import { getCatchErrorFn } from "@martinferra/frontend-common/interceptors/http-error.interceptor";
-import { AuthService } from "@martinferra/frontend-common/shared/services/auth/auth.service";
-import { ComponentResolverService } from "@martinferra/frontend-common/models/component-resolver.service";
+import { getAuthHeaderFn } from "../lib/interceptors/header.interceptor";
+import { getCatchErrorFn } from "../lib/interceptors/http-error.interceptor";
+import { AuthService } from "../lib/shared/services/auth/auth.service";
+import { ComponentResolverService } from "../lib/models/component-resolver.service";
 
 function appInitializerFactory(authService: AuthService) {
   return () => {
