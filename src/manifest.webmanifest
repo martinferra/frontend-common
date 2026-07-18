@@ -1,6 +1,6 @@
 {
-  "name": "mean-core",
-  "short_name": "mean-core",
+  "name": "backend-node-core",
+  "short_name": "backend-node-core",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
