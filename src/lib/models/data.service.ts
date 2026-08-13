@@ -231,8 +231,23 @@ export abstract class DataService {
   }
 
   public newElementObserver(discriminator?: string): Observable<any> {
-    let discPath: string = discriminator? '/'+discriminator : '';
-    return this.asyncTasksService.runTask(TaskType.subscription, this.getModel()+discPath+'/new').pipe(
+    return this.elementObserver('new', undefined, discriminator);
+  }
+
+  public updatedElementObserver(discriminator?: string, docId?: string): Observable<any> {
+    return this.elementObserver('update', docId, discriminator);
+  }
+
+  public removedElementObserver(discriminator?: string, docId?: string): Observable<any> {
+    return this.elementObserver('remove', docId, discriminator);
+  }
+
+  public elementObserver(method: string, docId?: string, discriminator?: string): Observable<any> {
+    const modelPath: string = this.getModel().toLowerCase();
+    const discPath: string = discriminator? '/'+discriminator : '';
+    const methodPath: string = '/'+method;
+    const docIdPath: string = docId? '/'+docId : '';
+    return this.asyncTasksService.runTask(TaskType.subscription, modelPath+discPath+methodPath+docIdPath).pipe(
       map((plainObject: any) => {
         return {
           path: plainObject.path, 
