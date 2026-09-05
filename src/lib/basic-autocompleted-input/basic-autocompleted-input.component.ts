@@ -88,6 +88,7 @@ export class BasicAutocompletedInputComponent<T>
   @Input() hint: string = '';
   @Input() panelWidth!: number | string;
   @Input() allowEditing: boolean = false;
+  @Input() allowCreate: boolean = true;
   @Input() allowClear: boolean = true;
   @Input() contextData: any = {};
   @Input() tabIndex: number | boolean = 0;
@@ -335,7 +336,10 @@ export class BasicAutocompletedInputComponent<T>
         ? outputOuterElement.isNew()
         : !Boolean(outputOuterElement?._id);
       if (isNew) {
-        this.openDialog(outputOuterElement);
+        if (this.allowCreate) {
+          this.openDialog(outputOuterElement);
+        }
+        return;
       } else {
         this.setSelectedElement(value);
       }
@@ -357,7 +361,7 @@ export class BasicAutocompletedInputComponent<T>
     let obs$ = this.filterElements(
       Object.assign({}, this.contextData, { queryStr })
     );
-    if (this.allowEditing) {
+    if (this.allowEditing && this.allowCreate) {
       obs$ = obs$.pipe(
         map((filteredElements: any[]) => {
           let newElement = this.getNewElementFromQuery(queryStr);
@@ -390,7 +394,7 @@ export class BasicAutocompletedInputComponent<T>
   displayElementInList(innerFilteredElement: any): string {
     const str = this.displayElementInListFn(innerFilteredElement);
     const isNew = !Boolean(this.getOuterElement(innerFilteredElement)?._id);
-    return isNew ? `"${str}" (crear nuevo)` : str;
+    return isNew && this.allowCreate ? `"${str}" (crear nuevo)` : str;
   }
 
   public editSelectedElement() {
