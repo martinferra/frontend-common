@@ -20,6 +20,10 @@ export class ConfirmationDialogComponent {
     @Inject(MAT_DIALOG_DATA) public dialogData: any
   ) {}
 
+  get showCancelBtn(): boolean {
+    return this.dialogData.showCancelBtn !== false;
+  }
+
   cancell(): void {
     this.dialog.close(false);
   }
