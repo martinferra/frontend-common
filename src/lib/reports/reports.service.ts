@@ -17,10 +17,23 @@ export class ReportsService {
 
   public getReport(reportId: string, filenamePreffix: string = '', fileExt: string, ...reportParams: any[]) : Observable<TaskState> {
 
-    const fileName = `${filenamePreffix || reportId}_${moment().format('YYYYMMDDHHmmss')}.${fileExt}`;
+    let fileName = `${filenamePreffix || reportId}_${moment().format('YYYYMMDDHHmmss')}.${fileExt}`;
 
-    return this.asyncTasksService.runTask(TaskType.rpc, {name: 'getReport', params: {reportId, reportParams}}).pipe(
+    const params = {
+      reportId,
+      reportParams,
+      ...(fileExt.toLowerCase() === 'zip' ? { responseFormat: 'named' } : {})
+    };
+    return this.asyncTasksService.runTask(TaskType.rpc, {name: 'getReport', params}).pipe(
       concatMap( (fileData: any) => {
+        if (fileData && fileData.format === 'named-report') {
+          if (typeof fileData.filename !== 'string' || !/^[^\\\/]+\.zip$/i.test(fileData.filename) ||
+              !(fileData.content instanceof ArrayBuffer)) {
+            throw new Error('Invalid named report response');
+          }
+          fileName = fileData.filename;
+          fileData = fileData.content;
+        }
         return typeof fileData === 'string'?
           this.fileDownloadService.downloadFile(fileData) :
           of(fileData);
